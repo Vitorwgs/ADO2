@@ -56,11 +56,14 @@ public class PlayList {
 
     public void setLink(String link) {
         this.link = link;
-              
     }
+  
+  
+
+   
     @Override
     public String toString() {
-        return "PlayList{" + "id=" + id + ", musica=" + musica + ", autor=" + autor + ", link=" + link + '}';
+        return "List - " +" Id: " + id + "/ Musica: " + musica + "/ Autor: " + autor + "/ Link: " + link;
     }
 
 }
