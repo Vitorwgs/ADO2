@@ -3,6 +3,7 @@ package lista;
 /*
  *  Professor Gerson Risso
  */
+import javax.swing.JOptionPane;
 import modelo.PlayList;
 
 public class Lista {
@@ -23,15 +24,20 @@ public class Lista {
             aux = atual;
         }
     }
-    
-    public void exibir(){
-      No ref=atual;
-      while(ref!=null){
-          System.out.println(ref.getObjeto());
-          ref=ref.getAnt();
-      }
+
+    public void exibir() {
+        No ref = atual;
+        StringBuilder sb = new StringBuilder();
+        while (ref != null) {
+            sb.append(ref.getObjeto().toString()).append("\n");
+            ref = ref.getAnt();
+        }
+        if (sb.length() == 0) {
+            sb.append("A lista está vazia.");
+        }
+        JOptionPane.showMessageDialog(null, sb.toString(), "Playlist", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     public Object pesquisar(int id) {
         No ref = inicio;
         PlayList playlist;
@@ -44,37 +50,50 @@ public class Lista {
         }
         return null;
     }
-    
-     public boolean remover(int id) {
-          //Pesquisa linear
-          No ref = inicio;
-          PlayList playlist;
-          while (ref != null) {
-              playlist = (PlayList) ref.getObjeto();//cast
-              if (id == playlist.getId()) {
-                  break;
-              }
-              ref = ref.getProx();
-          }
-          //verifica se achou
-          if (ref != null) {
-              //caso 1 - remover o primeiro nó
-              if (ref == inicio) {
-                  inicio = ref.getProx();
-                  ref.setProx(null);
-                  inicio.setAnt(null);
-              } else if (ref == atual) {
-                  atual = ref.getAnt();
-                  aux = atual;
-                  ref.setAnt(null);
-                  atual.setProx(null);
-              } else {
-                  ref.getAnt().setProx(ref.getProx());
-                  ref.getProx().setAnt(ref.getAnt());
-              }
-              return true;
-          }
-          return false;
-      }
-    }  
 
+    public boolean remover(int id) {
+        No ref = inicio;
+        PlayList playlist;
+        while (ref != null) {
+            playlist = (PlayList) ref.getObjeto();
+            if (id == playlist.getId()) {
+                break;
+            }
+            ref = ref.getProx();
+        }
+        if (ref != null) {
+            if (ref == inicio) {
+                inicio = ref.getProx();
+                ref.setProx(null);
+                inicio.setAnt(null);
+            } else if (ref == atual) {
+                atual = ref.getAnt();
+                aux = atual;
+                ref.setAnt(null);
+                atual.setProx(null);
+            } else {
+                ref.getAnt().setProx(ref.getProx());
+                ref.getProx().setAnt(ref.getAnt());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean atualizar(int id, PlayList novaMusica) {
+        No ref = inicio;
+        PlayList playlist;
+        while (ref != null) {
+            playlist = (PlayList) ref.getObjeto();
+            if (id == playlist.getId()) {
+                playlist.setMusica(novaMusica.getMusica());
+                playlist.setAutor(novaMusica.getAutor());
+                playlist.setLink(novaMusica.getLink());
+                return true;
+            }
+            ref = ref.getProx();
+        }
+        return false;
+    }
+
+}
